@@ -18,6 +18,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using WebApp.Core.Aplication.Interfaces;
 using WebApp.Infrastructure.Repositories;
+using WebApp.Infrastructure.Repositories.Cached;
 
 namespace WebApp
 {
@@ -34,7 +35,9 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMemoryCache();
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            services.Decorate<ICustomerRepository, CachedCustomerRepository>();
             services.AddApiVersioning(setupAction => 
             {
                 setupAction.AssumeDefaultVersionWhenUnspecified = true;
